@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 294e64a12b5cae7409f65e0159b3c7a6, type: 3}
+  m_Name: UIFrameSetting
+  m_EditorClassIdentifier: 
+  UIBaseTemplate: {fileID: 4900000, guid: db32835616d905f40a425d1e2264a318, type: 3}
+  UIComponentTemplate: {fileID: 4900000, guid: 116db1cdab1cd714a832af449d3c30a8, type: 3}
+  UIPanelTemplate: {fileID: 4900000, guid: 6bb1ac749a0b01d4aa92763af402df89, type: 3}
+  UIWindowTemplate: {fileID: 4900000, guid: 0ee90d94b4beeec488dbab07b1a1abed, type: 3}
+  AutoReference: 1
