@@ -2,8 +2,7 @@
     "name": "UIFrame.Demo",
     "rootNamespace": "",
     "references": [
-        "UIFrame",
-        "UniTask"
+        "UIFrame"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

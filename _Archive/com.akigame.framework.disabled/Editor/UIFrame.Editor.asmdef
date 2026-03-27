@@ -1,0 +1,22 @@
+{
+    "name": "UIFrame.Editor",
+    "rootNamespace": "",
+    "references": [
+        "TATools.FolderCommentTool.Editor",
+        "UIFrame",
+        "Unity.Addressables",
+        "Unity.Addressables.Editor",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

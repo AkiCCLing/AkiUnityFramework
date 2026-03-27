@@ -1,0 +1,15 @@
+{
+    "enableFolderComment": true,
+    "listViewFontSize": 14,
+    "iconViewFontSize": 14,
+    "useBoldFont": false,
+    "useOutline": false,
+    "outlineColor": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.5
+    },
+    "listViewRightMargin": 20.0,
+    "iconViewVerticalOffset": 0.0
+}
