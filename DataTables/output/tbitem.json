@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1001,
+    "name": "food",
+    "name_ch": "食物",
+    "pic": "img_Item_food1"
+  },
+  {
+    "id": 1002,
+    "name": "med",
+    "name_ch": "药物",
+    "pic": "img_Item_med1"
+  },
+  {
+    "id": 1003,
+    "name": "wood",
+    "name_ch": "木材",
+    "pic": "img_Item_woodPlank"
+  }
+]

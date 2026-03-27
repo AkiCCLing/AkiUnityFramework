@@ -237,6 +237,14 @@ namespace Feif.UIFramework
             }
             return Hide(ui.GetType(), forceDestroy);
         }
+
+        /// <summary>
+        /// 闅愯棌鎵€鏈夊凡鎵撳紑鐨勫眰绾I
+        /// </summary>
+        public static Task HideAll(bool forceDestroy = false)
+        {
+            return HideAllAsync(forceDestroy);
+        }
         #endregion
 
         #region 获得
@@ -861,6 +869,40 @@ namespace Feif.UIFramework
             {
                 Debug.LogException(ex);
             }
+        }
+
+        private static Task HideAllAsync(bool forceDestroy)
+        {
+            try
+            {
+                var opened = instances.Keys.ToArray();
+                panelStack.Clear();
+
+                foreach (var type in opened)
+                {
+                    if (!instances.TryGetValue(type, out var instance) || instance == null) continue;
+
+                    var uibase = instance.GetComponent<UIBase>();
+                    if (uibase == null) continue;
+                    if (!instance.activeInHierarchy && !(uibase.AutoDestroy || forceDestroy)) continue;
+
+                    var uibases = uibase.BreadthTraversal().ToArray();
+                    DoUnbind(uibases);
+                    DoHide(uibases);
+                    instance.SetActive(false);
+
+                    if (uibase.AutoDestroy || forceDestroy)
+                    {
+                        ReleaseInstance(type);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
+
+            return Task.CompletedTask;
         }
 
         private static bool TrySetData(UIBase ui, UIData data)

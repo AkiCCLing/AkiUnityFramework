@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1001,
+    "name": "轻度感染",
+    "day": 4,
+    "num_med": 1,
+    "count": 3
+  },
+  {
+    "id": 1002,
+    "name": "轻度感染",
+    "day": 9,
+    "num_med": 1,
+    "count": 2
+  },
+  {
+    "id": 1003,
+    "name": "中度感染",
+    "day": 14,
+    "num_med": 2,
+    "count": 3
+  },
+  {
+    "id": 1004,
+    "name": "中度感染",
+    "day": 19,
+    "num_med": 2,
+    "count": 2
+  },
+  {
+    "id": 1005,
+    "name": "重度感染",
+    "day": 24,
+    "num_med": 3,
+    "count": 3
+  },
+  {
+    "id": 1006,
+    "name": "重度感染",
+    "day": 29,
+    "num_med": 3,
+    "count": 2
+  }
+]

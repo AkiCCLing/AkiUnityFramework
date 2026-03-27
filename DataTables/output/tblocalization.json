@@ -1,0 +1,282 @@
+[
+  {
+    "id": 1,
+    "zh_cn": "<color=#FFFF00>登录</color>",
+    "en": "<color=#FFFF00>Login</color>"
+  },
+  {
+    "id": 2,
+    "zh_cn": "<color=#FFFFFF>探索</color>",
+    "en": "<color=#FFFFFF>Search</color>"
+  },
+  {
+    "id": 3,
+    "zh_cn": "<color=#FFFFFF>庇护所</color>",
+    "en": "<color=#FFFFFF>Shelter</color>"
+  },
+  {
+    "id": 4,
+    "zh_cn": "<color=#FFFFFF>物资</color>",
+    "en": "<color=#FFFFFF>Bag</color>"
+  },
+  {
+    "id": 5,
+    "zh_cn": "<color=#FFFFFF>交易</color>",
+    "en": "<color=#FFFFFF>Sell</color>"
+  },
+  {
+    "id": 6,
+    "zh_cn": "<color=#FFFFFF>装备</color>",
+    "en": "<color=#FFFFFF>Gear</color>"
+  },
+  {
+    "id": 7,
+    "zh_cn": "<color=#FFFFFF>食物充足</color>",
+    "en": "<color=#FFFFFF>Adequate food</color>"
+  },
+  {
+    "id": 8,
+    "zh_cn": "<color=#FFFFFF>食物不足</color>",
+    "en": "<color=#FFFFFF>Insufficient food</color>"
+  },
+  {
+    "id": 9,
+    "zh_cn": "<color=#FFFFFF>存活率</color>",
+    "en": "<color=#FFFFFF>Survival rate</color>"
+  },
+  {
+    "id": 10,
+    "zh_cn": "<color=#FFFFFF>吃下</color>",
+    "en": "<color=#FFFFFF>Eat it</color>"
+  },
+  {
+    "id": 11,
+    "zh_cn": "<color=#FFFFFF>恭喜你\\n又生存一天！</color>",
+    "en": "<color=#FFFFFF>Congratulations!\\n You've survived another day!</color>"
+  },
+  {
+    "id": 12,
+    "zh_cn": "<color=#FFFFFF>下一天</color>",
+    "en": "<color=#FFFFFF>Next day</color>"
+  },
+  {
+    "id": 13,
+    "zh_cn": "<color=#FFFFFF>生存失败</color>",
+    "en": "<color=#FFFFFF>Survival failure</color>"
+  },
+  {
+    "id": 14,
+    "zh_cn": "<color=#FFFFFF>重来</color>",
+    "en": "<color=#FFFFFF>Restart</color>"
+  },
+  {
+    "id": 15,
+    "zh_cn": "<color=#FFFFFF>需要食物</color>",
+    "en": "<color=#FFFFFF>Needs food</color>"
+  },
+  {
+    "id": 16,
+    "zh_cn": "<color=#FFFFFF>树林</color>",
+    "en": "<color=#FFFFFF>Forest</color>"
+  },
+  {
+    "id": 17,
+    "zh_cn": "<color=#FFFFFF>诊所</color>",
+    "en": "<color=#FFFFFF>Clinic</color>"
+  },
+  {
+    "id": 18,
+    "zh_cn": "<color=#FFFFFF>农场</color>",
+    "en": "<color=#FFFFFF>Farm</color>"
+  },
+  {
+    "id": 19,
+    "zh_cn": "<color=#FFFFFF>药物</color>",
+    "en": "<color=#FFFFFF>Medicine</color>"
+  },
+  {
+    "id": 20,
+    "zh_cn": "<color=#FFFFFF>木材</color>",
+    "en": "<color=#FFFFFF>Wood</color>"
+  },
+  {
+    "id": 21,
+    "zh_cn": "<color=#FFFFFF>食物</color>",
+    "en": "<color=#FFFFFF>Food</color>"
+  },
+  {
+    "id": 22,
+    "zh_cn": "<color=#FFFFFF>危险度</color>",
+    "en": "<color=#FFFFFF>Danger Level</color>"
+  },
+  {
+    "id": 23,
+    "zh_cn": "<color=#FFFFFF>低</color>",
+    "en": "<color=#FFFFFF>Low</color>"
+  },
+  {
+    "id": 24,
+    "zh_cn": "<color=#FFFFFF>中</color>",
+    "en": "<color=#FFFFFF>Medium</color>"
+  },
+  {
+    "id": 25,
+    "zh_cn": "<color=#FFFFFF>高</color>",
+    "en": "<color=#FFFFFF>High</color>"
+  },
+  {
+    "id": 26,
+    "zh_cn": "<color=#FFFFFF>可能掉落</color>",
+    "en": "<color=#FFFFFF>May fall</color>"
+  },
+  {
+    "id": 27,
+    "zh_cn": "<color=#FFFFFF>前往</color>",
+    "en": "<color=#FFFFFF>Go to</color>"
+  },
+  {
+    "id": 28,
+    "zh_cn": "<color=#FFFFFF>本次掉落</color>",
+    "en": "<color=#FFFFFF>This drop</color>"
+  },
+  {
+    "id": 29,
+    "zh_cn": "<color=#FFFFFF>点击打开</color>",
+    "en": "<color=#FFFFFF>Click to open</color>"
+  },
+  {
+    "id": 30,
+    "zh_cn": "<color=#FFFFFF>离开</color>",
+    "en": "<color=#FFFFFF>Leave</color>"
+  },
+  {
+    "id": 31,
+    "zh_cn": "<color=#FFFFFF>感染中</color>",
+    "en": "<color=#FFFFFF>Infected</color>"
+  },
+  {
+    "id": 32,
+    "zh_cn": "<color=#FFFFFF>在x天内找到</color>",
+    "en": "<color=#FFFFFF>Find within x days</color>"
+  },
+  {
+    "id": 33,
+    "zh_cn": "<color=#FFFFFF>谢谢你救了我一命！\\n我想知道你的名字</color>",
+    "en": "<color=#FFFFFF>Thank you for saving my life!\\n I want to know your name</color>"
+  },
+  {
+    "id": 34,
+    "zh_cn": "<color=#FFFFFF>我想知道你的名字</color>",
+    "en": ""
+  },
+  {
+    "id": 35,
+    "zh_cn": "<color=#FFFFFF>你应该很饿了</color>",
+    "en": "<color=#FFFFFF>You must be very hungry</color>"
+  },
+  {
+    "id": 36,
+    "zh_cn": "<color=#FFFFFF>这些食物送给你</color>",
+    "en": "<color=#FFFFFF>These foods are for you</color>"
+  },
+  {
+    "id": 37,
+    "zh_cn": "<color=#FFFFFF>今天很累了</color>",
+    "en": "<color=#FFFFFF>Very tired today</color>"
+  },
+  {
+    "id": 38,
+    "zh_cn": "<color=#FFFFFF>先休息吧</color>",
+    "en": "<color=#FFFFFF>Rest for now</color>"
+  },
+  {
+    "id": 39,
+    "zh_cn": "<color=#FFFFFF>吃下足够的食物</color>",
+    "en": "<color=#FFFFFF>Consume enough food</color>"
+  },
+  {
+    "id": 40,
+    "zh_cn": "<color=#FFFFFF>又生存了一天</color>",
+    "en": "<color=#FFFFFF>Survived another day</color>"
+  },
+  {
+    "id": 41,
+    "zh_cn": "<color=#FFFFFF>今日食物需求</color>",
+    "en": "<color=#FFFFFF>Daily Food Requirements</color>"
+  },
+  {
+    "id": 42,
+    "zh_cn": "<color=#FFFFFF>体力已恢复！</color>",
+    "en": "<color=#FFFFFF>Stamina has been restored!</color>"
+  },
+  {
+    "id": 43,
+    "zh_cn": "<color=#FFFFFF>又活一天！</color>",
+    "en": "<color=#FFFFFF>Another day alive!</color>"
+  },
+  {
+    "id": 44,
+    "zh_cn": "<color=#FFFFFF>食物不足</color>",
+    "en": "<color=#FFFFFF>Insufficient food</color>"
+  },
+  {
+    "id": 45,
+    "zh_cn": "<color=#FFFFFF>很不幸</color>",
+    "en": "<color=#FFFFFF>Unfortunately</color>"
+  },
+  {
+    "id": 46,
+    "zh_cn": "<color=#FFFFFF>没能撑到第二天</color>",
+    "en": "<color=#FFFFFF>Couldn't last until the next day</color>"
+  },
+  {
+    "id": 47,
+    "zh_cn": "<color=#FFFFFF>探索新地点</color>",
+    "en": "<color=#FFFFFF>Explore new locations</color>"
+  },
+  {
+    "id": 48,
+    "zh_cn": "<color=#FFFFFF>解锁新地点！</color>",
+    "en": "<color=#FFFFFF>Unlock new locations!</color>"
+  },
+  {
+    "id": 49,
+    "zh_cn": "<color=#FFFFFF>搜集更多食物！</color>",
+    "en": "<color=#FFFFFF>Collect more food!</color>"
+  },
+  {
+    "id": 50,
+    "zh_cn": "<color=#FFFFFF>搜集食物的效率更高了！</color>",
+    "en": "<color=#FFFFFF>Efficiency in collecting food has increased!</color>"
+  },
+  {
+    "id": 51,
+    "zh_cn": "<color=#FFFFFF>生存天数</color>",
+    "en": "<color=#FFFFFF>Days of Survival</color>"
+  },
+  {
+    "id": 1001,
+    "zh_cn": "语言",
+    "en": "Language"
+  },
+  {
+    "id": 1002,
+    "zh_cn": "继续",
+    "en": "Continue"
+  },
+  {
+    "id": 1003,
+    "zh_cn": "确认",
+    "en": "Confirm"
+  },
+  {
+    "id": 1004,
+    "zh_cn": "返回",
+    "en": "Back"
+  },
+  {
+    "id": 1005,
+    "zh_cn": "请输入名称",
+    "en": "Please enter a name"
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1001,
+    "name": "食物1",
+    "strength_need": 1,
+    "strength_need_first": 2,
+    "drop_rules": [
+      {
+        "item_name": "food",
+        "probability": 30,
+        "count": 1
+      }
+    ],
+    "exist_day": 1,
+    "unlock": ""
+  },
+  {
+    "id": 1002,
+    "name": "食物2",
+    "strength_need": 1,
+    "strength_need_first": 4,
+    "drop_rules": [
+      {
+        "item_name": "food",
+        "probability": 30,
+        "count": 1
+      }
+    ],
+    "exist_day": 3,
+    "unlock": "barrier:1001"
+  },
+  {
+    "id": 1003,
+    "name": "食物3",
+    "strength_need": 2,
+    "strength_need_first": 6,
+    "drop_rules": [
+      {
+        "item_name": "food",
+        "probability": 30,
+        "count": 1
+      }
+    ],
+    "exist_day": 6,
+    "unlock": "barrier:1002"
+  },
+  {
+    "id": 1004,
+    "name": "食物4",
+    "strength_need": 2,
+    "strength_need_first": 8,
+    "drop_rules": [
+      {
+        "item_name": "food",
+        "probability": 30,
+        "count": 1
+      }
+    ],
+    "exist_day": 10,
+    "unlock": "barrier:1003"
+  },
+  {
+    "id": 1005,
+    "name": "食物5",
+    "strength_need": 2,
+    "strength_need_first": 10,
+    "drop_rules": [
+      {
+        "item_name": "food",
+        "probability": 30,
+        "count": 1
+      }
+    ],
+    "exist_day": 15,
+    "unlock": "barrier:1004"
+  },
+  {
+    "id": 2001,
+    "name": "药品1",
+    "strength_need": 1,
+    "strength_need_first": 2,
+    "drop_rules": [
+      {
+        "item_name": "med",
+        "probability": 30,
+        "count": 0
+      }
+    ],
+    "exist_day": 3,
+    "unlock": ""
+  },
+  {
+    "id": 2002,
+    "name": "药品2",
+    "strength_need": 1,
+    "strength_need_first": 4,
+    "drop_rules": [
+      {
+        "item_name": "med",
+        "probability": 60,
+        "count": 1
+      }
+    ],
+    "exist_day": 6,
+    "unlock": "barrier:2001"
+  },
+  {
+    "id": 2003,
+    "name": "药品3",
+    "strength_need": 2,
+    "strength_need_first": 6,
+    "drop_rules": [
+      {
+        "item_name": "med",
+        "probability": 20,
+        "count": 1
+      }
+    ],
+    "exist_day": 10,
+    "unlock": "barrier:2002"
+  },
+  {
+    "id": 2004,
+    "name": "药品4",
+    "strength_need": 2,
+    "strength_need_first": 8,
+    "drop_rules": [
+      {
+        "item_name": "med",
+        "probability": 20,
+        "count": 1
+      }
+    ],
+    "exist_day": 14,
+    "unlock": "barrier:2003"
+  },
+  {
+    "id": 3001,
+    "name": "木材1",
+    "strength_need": 1,
+    "strength_need_first": 3,
+    "drop_rules": [
+      {
+        "item_name": "wood",
+        "probability": 30,
+        "count": 5
+      }
+    ],
+    "exist_day": 2,
+    "unlock": ""
+  },
+  {
+    "id": 3002,
+    "name": "木材2",
+    "strength_need": 1,
+    "strength_need_first": 5,
+    "drop_rules": [
+      {
+        "item_name": "wood",
+        "probability": 30,
+        "count": 8
+      }
+    ],
+    "exist_day": 5,
+    "unlock": "barrier:3001"
+  },
+  {
+    "id": 3003,
+    "name": "木材3",
+    "strength_need": 2,
+    "strength_need_first": 8,
+    "drop_rules": [
+      {
+        "item_name": "wood",
+        "probability": 30,
+        "count": 11
+      }
+    ],
+    "exist_day": 8,
+    "unlock": "barrier:3002"
+  }
+]

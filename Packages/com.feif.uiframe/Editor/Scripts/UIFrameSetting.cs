@@ -13,6 +13,11 @@ namespace Feif.UIFramework.Editor
         public TextAsset UIPanelTemplate;
         public TextAsset UIWindowTemplate;
         public bool AutoReference = true;
+        public string UIBaseScriptFolder = "Assets/Scripts/UI/Core";
+        public string UIComponentScriptFolder = "Assets/Scripts/UI/Components";
+        public string UIPanelScriptFolder = "Assets/Scripts/UI/Panels";
+        public string UIWindowScriptFolder = "Assets/Scripts/UI/Windows";
+        public string UIBindingScriptFolder = "Assets/Scripts/UI/Binding";
 
         public static UIFrameSetting Instance
         {
@@ -22,7 +27,8 @@ namespace Feif.UIFramework.Editor
                 if (guid == null)
                 {
                     var asset = CreateInstance<UIFrameSetting>();
-                    AssetDatabase.CreateAsset(asset, "Assets/UIFrameSetting.asset");
+                    EnsureFolderExists("Assets/Resources/UI/Config");
+                    AssetDatabase.CreateAsset(asset, "Assets/Resources/UI/Config/UIFrameSetting.asset");
                     AssetDatabase.Refresh();
                     guid = AssetDatabase.FindAssets("t:UIFrameSetting").FirstOrDefault();
                 }
@@ -48,6 +54,24 @@ namespace Feif.UIFramework.Editor
                 }
             }
             EditorUtility.SetDirty(this);
+        }
+
+        private static void EnsureFolderExists(string folderPath)
+        {
+            var normalized = folderPath.Replace("\\", "/");
+            var parts = normalized.Split('/');
+            if (parts.Length == 0 || parts[0] != "Assets") return;
+
+            var current = parts[0];
+            for (int i = 1; i < parts.Length; i++)
+            {
+                var next = $"{current}/{parts[i]}";
+                if (!AssetDatabase.IsValidFolder(next))
+                {
+                    AssetDatabase.CreateFolder(current, parts[i]);
+                }
+                current = next;
+            }
         }
     }
 }

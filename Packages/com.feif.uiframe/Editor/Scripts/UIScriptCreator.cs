@@ -29,8 +29,19 @@ namespace Feif.UIFramework.Editor
             script = Regex.Replace(script, " *#FUNCTIONS#", "");
             script = Regex.Replace(script, @"^ +\n", "\n", RegexOptions.Multiline);
             script = Regex.Replace(script, @"^ +\r\n", "\r\n", RegexOptions.Multiline);
-            var currentDir = ReflactionUtils.RunClassFunc<string>(typeof(ProjectWindowUtil), "GetActiveFolderPath");
-            File.WriteAllText(Path.Combine(Application.dataPath, "..", currentDir, fileName), script);
+            var relativePath = path.Replace("\\", "/");
+            if (!relativePath.StartsWith("Assets/"))
+            {
+                var currentDir = ReflactionUtils.RunClassFunc<string>(typeof(ProjectWindowUtil), "GetActiveFolderPath");
+                relativePath = Path.Combine(currentDir, fileName).Replace("\\", "/");
+            }
+            var absolutePath = Path.Combine(Application.dataPath, "..", relativePath);
+            var directory = Path.GetDirectoryName(absolutePath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            File.WriteAllText(absolutePath, script);
             AssetDatabase.Refresh();
         }
     }
@@ -102,6 +113,61 @@ namespace Feif.UIFramework.Editor
             return script;
         }
 
+        private static string GetScriptOutputDirectory(string fileName)
+        {
+            var setting = UIFrameSetting.Instance;
+            switch (fileName)
+            {
+                case "NewUIBase.cs":
+                    return setting.UIBaseScriptFolder;
+                case "NewUIComponent.cs":
+                    return setting.UIComponentScriptFolder;
+                case "NewUIPanel.cs":
+                    return setting.UIPanelScriptFolder;
+                case "NewUIWindow.cs":
+                    return setting.UIWindowScriptFolder;
+                default:
+                    return "Assets/Scripts";
+            }
+        }
+
+        private static string GetBindingOutputDirectory()
+        {
+            return UIFrameSetting.Instance.UIBindingScriptFolder;
+        }
+
+        private static string GetDefaultNewScriptPath(string fileName)
+        {
+            var scriptDir = NormalizeAssetFolderPath(GetScriptOutputDirectory(fileName), "Assets/Scripts");
+            return $"{scriptDir}/{fileName}";
+        }
+
+        private static string NormalizeAssetFolderPath(string folderPath, string fallback)
+        {
+            var path = string.IsNullOrWhiteSpace(folderPath) ? fallback : folderPath.Trim().Replace("\\", "/");
+            if (!path.StartsWith("Assets"))
+            {
+                path = fallback;
+            }
+            return path;
+        }
+
+        private static void EnsureFolderExists(string folderPath)
+        {
+            var normalized = NormalizeAssetFolderPath(folderPath, "Assets");
+            var parts = normalized.Split('/');
+            var current = parts[0];
+            for (int i = 1; i < parts.Length; i++)
+            {
+                var next = $"{current}/{parts[i]}";
+                if (!AssetDatabase.IsValidFolder(next))
+                {
+                    AssetDatabase.CreateFolder(current, parts[i]);
+                }
+                current = next;
+            }
+        }
+
         public static void DoCreate(string fileName, string template)
         {
             if (Selection.objects.Length > 0)
@@ -109,13 +175,16 @@ namespace Feif.UIFramework.Editor
                 var prefab = Selection.objects[0] as GameObject;
                 if (prefab != null)
                 {
-                    var currentDir = ReflactionUtils.RunClassFunc<string>(typeof(ProjectWindowUtil), "GetActiveFolderPath");
+                    var scriptDir = NormalizeAssetFolderPath(GetScriptOutputDirectory(fileName), "Assets/Scripts");
+                    var bindingDir = NormalizeAssetFolderPath(GetBindingOutputDirectory(), "Assets/Scripts/UI/Binding");
+                    EnsureFolderExists(scriptDir);
+                    EnsureFolderExists(bindingDir);
                     var codeSnippets = GetCodeSnippets(prefab);
                     var result = AddCodeSnippetToTemplate(template, prefab.name, codeSnippets);
-                    File.WriteAllText(Path.Combine(Application.dataPath, "..", currentDir, $"{prefab.name}.cs"), result);
+                    File.WriteAllText(Path.Combine(Application.dataPath, "..", scriptDir, $"{prefab.name}.cs"), result);
                     
                     // 生成绑定partial脚本
-                    GenerateBindingPartialScript(prefab, currentDir);
+                    GenerateBindingPartialScript(prefab, bindingDir);
                     
                     // 等待脚本编译完成后添加组件到Prefab
                     var prefabPath = AssetDatabase.GetAssetPath(prefab);
@@ -133,7 +202,9 @@ namespace Feif.UIFramework.Editor
             {
                 TestEndAction endAction = ScriptableObject.CreateInstance<TestEndAction>();
                 ReflactionUtils.RunInstanceFunc(projectBrowserIfExists, "Focus");
-                ReflactionUtils.RunInstanceFunc(projectBrowserIfExists, "BeginPreimportedNameEditing", 0, endAction, fileName, EditorGUIUtility.IconContent("cs Script Icon").image as Texture2D, template, true);
+                var defaultPath = GetDefaultNewScriptPath(fileName);
+                EnsureFolderExists(Path.GetDirectoryName(defaultPath).Replace("\\", "/"));
+                ReflactionUtils.RunInstanceFunc(projectBrowserIfExists, "BeginPreimportedNameEditing", 0, endAction, defaultPath, EditorGUIUtility.IconContent("cs Script Icon").image as Texture2D, template, true);
                 ReflactionUtils.RunInstanceFunc(projectBrowserIfExists, "Repaint");
             }
         }
@@ -214,8 +285,9 @@ namespace Feif.UIFramework.Editor
                 return;
             }
 
-            var currentDir = ReflactionUtils.RunClassFunc<string>(typeof(ProjectWindowUtil), "GetActiveFolderPath");
-            GenerateBindingPartialScript(prefab, currentDir);
+            var bindingDir = NormalizeAssetFolderPath(GetBindingOutputDirectory(), "Assets/Scripts/UI/Binding");
+            EnsureFolderExists(bindingDir);
+            GenerateBindingPartialScript(prefab, bindingDir);
             
             // 确保脚本组件已添加到Prefab
             var prefabPath = AssetDatabase.GetAssetPath(prefab);

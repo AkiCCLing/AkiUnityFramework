@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "zh_cn": "登录",
+    "en": "Login"
+  },
+  {
+    "id": 1001,
+    "zh_cn": "语言",
+    "en": "Language"
+  },
+  {
+    "id": 1002,
+    "zh_cn": "继续",
+    "en": "Continue"
+  },
+  {
+    "id": 1003,
+    "zh_cn": "确认",
+    "en": "Confirm"
+  },
+  {
+    "id": 1004,
+    "zh_cn": "返回",
+    "en": "Back"
+  },
+  {
+    "id": 1005,
+    "zh_cn": "请输入名称",
+    "en": "Please enter a name"
+  }
+]
