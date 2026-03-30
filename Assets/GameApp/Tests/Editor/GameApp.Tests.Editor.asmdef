@@ -1,0 +1,22 @@
+{
+    "name": "GameApp.Tests.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GameApp",
+        "UIFrame"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

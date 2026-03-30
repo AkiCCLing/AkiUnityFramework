@@ -11,7 +11,7 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774600085544,
-            "modifiedTimeStamp": 1774666395975
+            "modifiedTimeStamp": 1774853618181
         },
         {
             "guid": "dcd3a9805e952b6468e8e00d53ecc63d",
@@ -24,7 +24,7 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000000,
-            "modifiedTimeStamp": 1774666396003
+            "modifiedTimeStamp": 1774853618189
         },
         {
             "guid": "fd8589a53d47be649ac52a86a4ce9236",
@@ -37,7 +37,7 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000001,
-            "modifiedTimeStamp": 1774666396004
+            "modifiedTimeStamp": 1774853618190
         },
         {
             "guid": "6872b1ca15a2dc0499234252c21559d2",
@@ -50,7 +50,7 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000002,
-            "modifiedTimeStamp": 1774666396005
+            "modifiedTimeStamp": 1774853618192
         },
         {
             "guid": "08c8d0e013919344da571fe4165f9424",
@@ -63,7 +63,7 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000003,
-            "modifiedTimeStamp": 1774666396006
+            "modifiedTimeStamp": 1774856827325
         },
         {
             "guid": "c8402c85f36adf54088f9d573d4aef0d",
@@ -76,20 +76,20 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000004,
-            "modifiedTimeStamp": 1774666396007
+            "modifiedTimeStamp": 1774853618193
         },
         {
             "guid": "d29dad22396d7d241adf0eb8951d1ec3",
-            "title": "★ 美术资源",
-            "comment": "模型 材质 纹理 音频和特效资源",
+            "title": "◈ 游戏资产",
+            "comment": "UI、美术、预制体、场景截图等游戏资产",
             "titleColor": {
-                "r": 1.0,
-                "g": 0.20000000298023225,
-                "b": 0.5799999833106995,
+                "r": 0.7200000286102295,
+                "g": 0.2199999988079071,
+                "b": 1.0,
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000005,
-            "modifiedTimeStamp": 1774666396008
+            "modifiedTimeStamp": 1774856827323
         },
         {
             "guid": "d603d1143168c204da5ef61b948964ce",
@@ -102,12 +102,12 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000006,
-            "modifiedTimeStamp": 1774666396008
+            "modifiedTimeStamp": 1774856827327
         },
         {
             "guid": "709f11a7f3c4041caa4ef136ea32d874",
-            "title": "▤ 工程设置",
-            "comment": "项目内资源设置和配置文件",
+            "title": "▤ 游戏配置",
+            "comment": "项目内渲染与运行配置资源",
             "titleColor": {
                 "r": 0.5,
                 "g": 0.550000011920929,
@@ -115,11 +115,11 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000007,
-            "modifiedTimeStamp": 1774666396009
+            "modifiedTimeStamp": 1774856827329
         },
         {
             "guid": "326968f7a55074a40a94e791f80161a2",
-            "title": "⬢ 外部文件",
+            "title": "⬡ 外部文件",
             "comment": "构建后需要原样输出的资源",
             "titleColor": {
                 "r": 0.7799999713897705,
@@ -128,7 +128,59 @@
                 "a": 1.0
             },
             "createdTimeStamp": 1774605000008,
-            "modifiedTimeStamp": 1774666396010
+            "modifiedTimeStamp": 1774856827330
+        },
+        {
+            "guid": "91d76d71dd5afab4d909123741aa28da",
+            "title": "◎ 第三方插件",
+            "comment": "外部插件、第三方资源与供应商示例",
+            "titleColor": {
+                "r": 1.0,
+                "g": 0.550000011920929,
+                "b": 0.0,
+                "a": 1.0
+            },
+            "createdTimeStamp": 1774854734406,
+            "modifiedTimeStamp": 1774856827311
+        },
+        {
+            "guid": "146c7362134878d4b8e8219266659c4e",
+            "title": "◆ 游戏业务",
+            "comment": "业务逻辑、数据、测试与项目内配置",
+            "titleColor": {
+                "r": 0.0,
+                "g": 0.6499999761581421,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "createdTimeStamp": 1774854734421,
+            "modifiedTimeStamp": 1774856827322
+        },
+        {
+            "guid": "cf18f0cbb4d7d9a46bfdd010fdbc11e7",
+            "title": "▣ 框架目录",
+            "comment": "Aki 框架核心、编辑器扩展与框架示例",
+            "titleColor": {
+                "r": 0.3199999928474426,
+                "g": 0.8999999761581421,
+                "b": 0.18000000715255738,
+                "a": 1.0
+            },
+            "createdTimeStamp": 1774854734423,
+            "modifiedTimeStamp": 1774856827323
+        },
+        {
+            "guid": "8e5984ec3a8058d4788a34a134f294b9",
+            "title": "⬢ Addressables",
+            "comment": "Addressables 配置、分组与构建脚本",
+            "titleColor": {
+                "r": 0.10000000149011612,
+                "g": 0.800000011920929,
+                "b": 0.6000000238418579,
+                "a": 1.0
+            },
+            "createdTimeStamp": 1774854734428,
+            "modifiedTimeStamp": 1774856827326
         }
     ]
 }
