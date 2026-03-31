@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using Feif.Extensions;
+using Client.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 

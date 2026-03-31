@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using Feif.Extensions;
+using Client.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +15,8 @@ namespace AkiFramework.Editor
 
         public override List<GameObject> GetGameObjects(GameObject prefab)
         {
-            return prefab.transform.BreadthTraversal(t => t != prefab.transform && t.GetComponent<Feif.UIFramework.UIBase>() != null)
-                .Where(item => item.GetComponent<Feif.UIFramework.UIBase>() != null && item.name.StartsWith("@"))
+            return prefab.transform.BreadthTraversal(t => t != prefab.transform && t.GetComponent<Client.UIFramework.UIBase>() != null)
+                .Where(item => item.GetComponent<Client.UIFramework.UIBase>() != null && item.name.StartsWith("@"))
                 .Select(item => item.gameObject)
                 .ToList();
         }

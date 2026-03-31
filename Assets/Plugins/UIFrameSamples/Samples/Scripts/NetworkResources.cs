@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using UnityEngine.Networking;
 using UnityEngine;
 
-namespace Feif
+namespace Client
 {
     public static class NetworkResources
     {

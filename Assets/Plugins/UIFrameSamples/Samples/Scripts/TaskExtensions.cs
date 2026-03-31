@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Feif.Extensions
+namespace Client.Extensions
 {
     public static class TaskExtensions
     {

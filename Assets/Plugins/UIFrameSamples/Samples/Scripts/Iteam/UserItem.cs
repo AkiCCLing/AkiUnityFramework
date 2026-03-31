@@ -3,11 +3,12 @@ using Task = Cysharp.Threading.Tasks.UniTask;
 #else
 using Task = System.Threading.Tasks.Task;
 #endif
+using Client;
 using UnityEngine;
 using UnityEngine.UI;
-using Feif.UIFramework;
+using Client.UIFramework;
 
-namespace Feif.UI
+namespace Client.UI
 {
     public class UserItemData : UIData
     {

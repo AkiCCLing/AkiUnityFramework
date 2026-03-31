@@ -1,7 +1,7 @@
-using Feif.UIFramework;
+using Client.UIFramework;
 using System.Collections.Generic;
 
-namespace Feif.Extensions
+namespace Client.Extensions
 {
     public static class UIBaseExtensions
     {

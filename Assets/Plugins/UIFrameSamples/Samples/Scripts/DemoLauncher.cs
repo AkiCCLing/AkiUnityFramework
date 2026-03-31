@@ -1,5 +1,5 @@
-using Feif.UI;
-using Feif.UIFramework;
+using Client.UI;
+using Client.UIFramework;
 using System;
 using UnityEngine;
 #if USING_UNITASK
@@ -10,7 +10,7 @@ using Task = System.Threading.Tasks.Task;
 using System.Threading.Tasks;
 #endif
 
-namespace Feif
+namespace Client
 {
     public class DemoLauncher : MonoBehaviour
     {

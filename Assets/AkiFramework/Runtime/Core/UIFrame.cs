@@ -4,21 +4,21 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using UnityEngine;
-using Feif.Extensions;
+using Client.Extensions;
 
 #if USING_UNITASK
 using GameObjectTask = Cysharp.Threading.Tasks.UniTask<UnityEngine.GameObject>;
-using UIBaseTask = Cysharp.Threading.Tasks.UniTask<Feif.UIFramework.UIBase>;
+using UIBaseTask = Cysharp.Threading.Tasks.UniTask<Client.UIFramework.UIBase>;
 using Task = Cysharp.Threading.Tasks.UniTask;
 using Cysharp.Threading.Tasks;
 #else
 using GameObjectTask = System.Threading.Tasks.Task<UnityEngine.GameObject>;
-using UIBaseTask = System.Threading.Tasks.Task<Feif.UIFramework.UIBase>;
+using UIBaseTask = System.Threading.Tasks.Task<Client.UIFramework.UIBase>;
 using Task = System.Threading.Tasks.Task;
 using System.Threading.Tasks;
 #endif
 
-namespace Feif.UIFramework
+namespace Client.UIFramework
 {
     [RequireComponent(typeof(RectTransform))]
     [DisallowMultipleComponent]

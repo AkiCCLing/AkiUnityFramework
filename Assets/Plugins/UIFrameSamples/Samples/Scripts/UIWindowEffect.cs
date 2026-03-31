@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Feif.UI
+namespace Client.UI
 {
     public class UIWindowEffect : MonoBehaviour
     {

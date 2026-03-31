@@ -1,4 +1,4 @@
-namespace Feif.UIFramework
+namespace Client.UIFramework
 {
     public class PanelLayer : UILayer
     {

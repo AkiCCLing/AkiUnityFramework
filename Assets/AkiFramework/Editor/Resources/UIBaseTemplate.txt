@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using Feif.UIFramework;
+using Client.UIFramework;
 
-namespace Feif.UI
+namespace Client.UI
 {
     public partial class #SCRIPTNAME# : UIBase
     {

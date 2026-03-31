@@ -7,7 +7,7 @@ using Task = Cysharp.Threading.Tasks.UniTask;
 using Task = System.Threading.Tasks.Task;
 #endif
 
-namespace Feif.UIFramework
+namespace Client.UIFramework
 {
     [RequireComponent(typeof(RectTransform))]
     [DisallowMultipleComponent]

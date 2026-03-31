@@ -1,5 +1,5 @@
-using Feif.Extensions;
-using Feif.UIFramework;
+using Client.Extensions;
+using Client.UIFramework;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -11,7 +11,7 @@ using Task = System.Threading.Tasks.Task;
 using System.Threading.Tasks;
 #endif
 
-namespace Feif.UI
+namespace Client.UI
 {
     public class SubUIA : UIBase
     {

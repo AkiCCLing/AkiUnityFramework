@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Feif.UIFramework
+namespace Client.UIFramework
 {
     public class UITimer
     {

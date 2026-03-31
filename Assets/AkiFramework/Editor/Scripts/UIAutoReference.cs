@@ -5,9 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System;
 using System.Collections;
-using Feif.UIFramework;
+using Client.UIFramework;
 using UnityObject = UnityEngine.Object;
-using Feif.Extensions;
+using Client.Extensions;
 
 # if UNITY_2020_1_OR_NEWER
 using UnityEditor.SceneManagement;

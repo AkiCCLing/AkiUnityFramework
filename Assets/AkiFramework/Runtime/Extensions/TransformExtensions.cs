@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Feif.Extensions
+namespace Client.Extensions
 {
     public static class TransformExtensions
     {

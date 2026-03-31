@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Feif.UIFramework;
+using Client.UIFramework;
 using System;
 #if USING_UNITASK
 using Task = Cysharp.Threading.Tasks.UniTask;
@@ -8,7 +8,7 @@ using Task = Cysharp.Threading.Tasks.UniTask;
 using Task = System.Threading.Tasks.Task;
 #endif
 
-namespace Feif.UI
+namespace Client.UI
 {
     public class UITestAData : UIData
     {

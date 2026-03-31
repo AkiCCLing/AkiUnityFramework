@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Feif
+namespace Client
 {
     public class StuckPanel : MonoBehaviour
     {

@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Feif.UIFramework;
+using Client.UIFramework;
 #if USING_UNITASK
 using Task = Cysharp.Threading.Tasks.UniTask;
 #else
 using Task = System.Threading.Tasks.Task;
 #endif
 
-namespace Feif.UI
+namespace Client.UI
 {
     public class UITestBData : UIData
     {

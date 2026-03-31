@@ -1,6 +1,6 @@
 using System;
 
-namespace Feif.UIFramework
+namespace Client.UIFramework
 {
     [AttributeUsage(AttributeTargets.Class)]
     public abstract class UILayer : Attribute, IComparable<UILayer>

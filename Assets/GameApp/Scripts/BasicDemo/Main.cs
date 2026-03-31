@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AkiFramework;
-using Feif.UIFramework;
+using Client.UIFramework;
 using UnityEngine;
 
 namespace GameApp

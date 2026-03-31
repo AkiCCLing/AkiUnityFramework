@@ -1,6 +1,6 @@
 using System;
 
-namespace Feif.UIFramework
+namespace Client.UIFramework
 {
     public class UIData
     {

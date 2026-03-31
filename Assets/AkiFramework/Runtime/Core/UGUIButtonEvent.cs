@@ -6,9 +6,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using Feif.Extensions;
+using Client.Extensions;
 
-namespace Feif.UIFramework
+namespace Client.UIFramework
 {
     public class UGUIButtonEventAttribute : Attribute
     {
