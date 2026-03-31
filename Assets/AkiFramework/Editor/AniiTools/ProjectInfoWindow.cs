@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +17,14 @@ namespace AkiFramework.Editor
             window.minSize = new Vector2(520f, 420f);
             window.RefreshSnapshot();
             window.Show();
+        }
+
+        [MenuItem("Anii Tools/版本控制/更新仓库")]
+        public static void UpdateRepositoryMenu()
+        {
+            var projectRoot = GetProjectRoot();
+            var result = ProjectInfoProvider.UpdateRepositoryNow(projectRoot);
+            EditorUtility.DisplayDialog("更新仓库", result.Message, "确定");
         }
 
         private void OnEnable()
@@ -56,6 +65,14 @@ namespace AkiFramework.Editor
             {
                 GUILayout.Label("当前工程状态概览", EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
+
+                using (new EditorGUI.DisabledScope(!ProjectInfoProvider.CanUpdateRepository(_snapshot?.ProjectRoot ?? GetProjectRoot())))
+                {
+                    if (GUILayout.Button("更新仓库", EditorStyles.toolbarButton, GUILayout.Width(90f)))
+                    {
+                        UpdateRepository();
+                    }
+                }
 
                 if (GUILayout.Button("刷新", EditorStyles.toolbarButton, GUILayout.Width(60f)))
                 {
@@ -124,6 +141,19 @@ namespace AkiFramework.Editor
         private void RefreshSnapshot()
         {
             _snapshot = ProjectInfoProvider.Collect();
+        }
+
+        private void UpdateRepository()
+        {
+            var result = ProjectInfoProvider.UpdateRepositoryNow(_snapshot?.ProjectRoot ?? GetProjectRoot());
+            RefreshSnapshot();
+            Repaint();
+            EditorUtility.DisplayDialog("更新仓库", result.Message, "确定");
+        }
+
+        private static string GetProjectRoot()
+        {
+            return Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
         }
     }
 }

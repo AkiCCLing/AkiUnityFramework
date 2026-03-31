@@ -42,7 +42,7 @@ namespace AkiFramework.Editor
         {
             var ms = MonoScript.FromScriptableObject(this);
             var path = AssetDatabase.GetAssetPath(ms);
-            var resPath = Path.GetDirectoryName(path).Replace("Scripts", "Resources");
+            var resPath = Path.GetDirectoryName(path)?.Replace("Scripts", "Resources");
             var fields = GetType().GetFields();
             foreach (var field in fields)
             {

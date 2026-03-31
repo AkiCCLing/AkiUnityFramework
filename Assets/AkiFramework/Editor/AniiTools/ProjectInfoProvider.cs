@@ -13,6 +13,9 @@ namespace AkiFramework.Editor
     internal static class ProjectInfoProvider
     {
         private const string LanguagePrefsKey = "GameApp.Language";
+        private const double GitFetchIntervalSeconds = 120d;
+
+        private static double _nextGitFetchTime;
 
         public static ProjectInfoSnapshot Collect()
         {
@@ -56,6 +59,61 @@ namespace AkiFramework.Editor
             return VcsVersionInfo.Unknown;
         }
 
+        public static bool CanRefreshVcs(string projectRoot)
+        {
+            if (string.IsNullOrWhiteSpace(projectRoot))
+            {
+                return false;
+            }
+
+            return Directory.Exists(Path.Combine(projectRoot, ".git")) || Directory.Exists(Path.Combine(projectRoot, ".svn"));
+        }
+
+        public static bool RefreshVcsNow(string projectRoot)
+        {
+            if (string.IsNullOrWhiteSpace(projectRoot))
+            {
+                return false;
+            }
+
+            if (Directory.Exists(Path.Combine(projectRoot, ".git")))
+            {
+                return RefreshGitRemoteNow(projectRoot);
+            }
+
+            if (Directory.Exists(Path.Combine(projectRoot, ".svn")))
+            {
+                return RefreshSvnRemoteNow(projectRoot);
+            }
+
+            return false;
+        }
+
+        public static bool CanUpdateRepository(string projectRoot)
+        {
+            return CanRefreshVcs(projectRoot);
+        }
+
+        public static RepositoryUpdateResult UpdateRepositoryNow(string projectRoot)
+        {
+            if (string.IsNullOrWhiteSpace(projectRoot))
+            {
+                return new RepositoryUpdateResult(false, "工程路径无效。");
+            }
+
+            if (Directory.Exists(Path.Combine(projectRoot, ".git")))
+            {
+                return UpdateGitRepository(projectRoot);
+            }
+
+            if (Directory.Exists(Path.Combine(projectRoot, ".svn")))
+            {
+                return UpdateSvnRepository(projectRoot);
+            }
+
+            return new RepositoryUpdateResult(false, "当前工程未检测到 Git 或 SVN。");
+        }
+
         private static VcsVersionInfo GetGitVersionInfo(string workingDirectory)
         {
             if (!Directory.Exists(Path.Combine(workingDirectory, ".git")))
@@ -80,6 +138,7 @@ namespace AkiFramework.Editor
 
             if (!string.IsNullOrWhiteSpace(upstreamRef))
             {
+                TryRefreshGitRemote(upstreamRef, workingDirectory);
                 latestShortHash = RunCommand("git", $"rev-parse --short {upstreamRef}", workingDirectory) ?? localShortHash;
                 latestFullHash = RunCommand("git", $"rev-parse {upstreamRef}", workingDirectory) ?? localFullHash;
                 latestTimeRaw = RunCommand("git", $"show -s --format=%cI {upstreamRef}", workingDirectory) ?? latestTimeRaw;
@@ -111,6 +170,101 @@ namespace AkiFramework.Editor
                 latestTimeText,
                 statusText,
                 isBehindLatest);
+        }
+
+        private static void TryRefreshGitRemote(string upstreamRef, string workingDirectory)
+        {
+            if (EditorApplication.timeSinceStartup < _nextGitFetchTime)
+            {
+                return;
+            }
+
+            var remoteName = GetRemoteName(upstreamRef);
+            if (string.IsNullOrWhiteSpace(remoteName))
+            {
+                return;
+            }
+
+            _nextGitFetchTime = EditorApplication.timeSinceStartup + GitFetchIntervalSeconds;
+            RunCommand("git", $"fetch --quiet --prune {remoteName}", workingDirectory, 5000);
+        }
+
+        private static bool RefreshGitRemoteNow(string projectRoot)
+        {
+            var upstreamRef = RunCommand("git", "rev-parse --abbrev-ref --symbolic-full-name @{u}", projectRoot);
+            var remoteName = GetRemoteName(upstreamRef) ?? "origin";
+            _nextGitFetchTime = EditorApplication.timeSinceStartup + GitFetchIntervalSeconds;
+            RunCommand("git", $"fetch --quiet --prune {remoteName}", projectRoot, 8000);
+            return true;
+        }
+
+        private static bool RefreshSvnRemoteNow(string projectRoot)
+        {
+            RunCommand("svn", "status -u", projectRoot, 8000);
+            return true;
+        }
+
+        private static RepositoryUpdateResult UpdateGitRepository(string projectRoot)
+        {
+            var statusOutput = RunCommandAllowEmpty("git", "status --porcelain", projectRoot, 4000);
+            if (statusOutput == null)
+            {
+                return new RepositoryUpdateResult(false, "无法检查 Git 工作区状态。");
+            }
+
+            if (!string.IsNullOrWhiteSpace(statusOutput))
+            {
+                return new RepositoryUpdateResult(false, "Git 工作区有未提交改动，已阻止自动拉取。请先提交、暂存或清理改动。");
+            }
+
+            var branch = RunCommand("git", "rev-parse --abbrev-ref HEAD", projectRoot);
+            if (string.IsNullOrWhiteSpace(branch))
+            {
+                return new RepositoryUpdateResult(false, "无法识别当前 Git 分支。");
+            }
+
+            var upstreamRef = RunCommand("git", "rev-parse --abbrev-ref --symbolic-full-name @{u}", projectRoot);
+            if (string.IsNullOrWhiteSpace(upstreamRef))
+            {
+                return new RepositoryUpdateResult(false, "当前 Git 分支没有配置上游分支，无法自动拉取。");
+            }
+
+            var remoteName = GetRemoteName(upstreamRef) ?? "origin";
+            var pullOutput = RunCommandAllowEmpty("git", $"pull --ff-only {remoteName} {branch}", projectRoot, 15000);
+            if (pullOutput == null)
+            {
+                return new RepositoryUpdateResult(false, "Git 拉取失败，请检查网络、权限或分支状态。");
+            }
+
+            _nextGitFetchTime = EditorApplication.timeSinceStartup + GitFetchIntervalSeconds;
+            return new RepositoryUpdateResult(true, string.IsNullOrWhiteSpace(pullOutput) ? "Git 仓库已更新。" : pullOutput.Trim());
+        }
+
+        private static RepositoryUpdateResult UpdateSvnRepository(string projectRoot)
+        {
+            var updateOutput = RunCommandAllowEmpty("svn", "update", projectRoot, 15000);
+            if (updateOutput == null)
+            {
+                return new RepositoryUpdateResult(false, "SVN 更新失败，请检查网络、权限或工作副本状态。");
+            }
+
+            return new RepositoryUpdateResult(true, string.IsNullOrWhiteSpace(updateOutput) ? "SVN 仓库已更新。" : updateOutput.Trim());
+        }
+
+        private static string GetRemoteName(string upstreamRef)
+        {
+            if (string.IsNullOrWhiteSpace(upstreamRef))
+            {
+                return null;
+            }
+
+            var slashIndex = upstreamRef.IndexOf('/');
+            if (slashIndex <= 0)
+            {
+                return null;
+            }
+
+            return upstreamRef.Substring(0, slashIndex);
         }
 
         private static string DetermineGitStatus(string localFullHash, string latestFullHash, string upstreamRef, string workingDirectory)
@@ -261,7 +415,13 @@ namespace AkiFramework.Editor
             return rawTime.Trim();
         }
 
-        private static string RunCommand(string fileName, string arguments, string workingDirectory)
+        private static string RunCommand(string fileName, string arguments, string workingDirectory, int timeoutMs = 2000)
+        {
+            var output = RunCommandAllowEmpty(fileName, arguments, workingDirectory, timeoutMs);
+            return string.IsNullOrWhiteSpace(output) ? null : output;
+        }
+
+        private static string RunCommandAllowEmpty(string fileName, string arguments, string workingDirectory, int timeoutMs = 2000)
         {
             try
             {
@@ -281,7 +441,7 @@ namespace AkiFramework.Editor
                 var output = process.StandardOutput.ReadToEnd().Trim();
                 process.StandardError.ReadToEnd();
 
-                if (!process.WaitForExit(2000))
+                if (!process.WaitForExit(timeoutMs))
                 {
                     try
                     {
@@ -294,7 +454,7 @@ namespace AkiFramework.Editor
                     return null;
                 }
 
-                return process.ExitCode == 0 && !string.IsNullOrWhiteSpace(output) ? output : null;
+                return process.ExitCode == 0 ? output : null;
             }
             catch (Exception)
             {
@@ -382,5 +542,17 @@ namespace AkiFramework.Editor
         public string LatestUpdateTime { get; }
         public string StatusText { get; }
         public bool IsBehindLatest { get; }
+    }
+
+    internal sealed class RepositoryUpdateResult
+    {
+        public RepositoryUpdateResult(bool success, string message)
+        {
+            Success = success;
+            Message = string.IsNullOrWhiteSpace(message) ? "--" : message;
+        }
+
+        public bool Success { get; }
+        public string Message { get; }
     }
 }
