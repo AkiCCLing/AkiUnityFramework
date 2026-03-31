@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
@@ -9,8 +10,8 @@ using UnityEngine.UIElements;
 namespace AkiFramework.Editor
 {
     /// <summary>
-    /// 在 Unity 顶部工具栏显示版本信息
-    /// 默认插入到 Play、Pause、Step 左侧
+    /// 在 Unity 顶部工具栏显示版本信息。
+    /// 默认插入到 Play、Pause、Step 左侧。
     /// </summary>
     [InitializeOnLoad]
     public static class VcsVersionToolbar
@@ -19,15 +20,20 @@ namespace AkiFramework.Editor
         private const string LeftZoneName = "ToolbarZoneLeftAlign";
         private const string ToolbarTypeName = "UnityEditor.Toolbar";
         private const string RootFieldName = "m_Root";
+        private const string UnknownVersionText = "版本: --";
+
+        private static readonly Color LatestColor = new(0f, 1f, 0f);
+        private static readonly Color OutdatedColor = new(1f, 0.62f, 0.2f);
+        private static readonly Color UnknownColor = new(0.7f, 0.7f, 0.7f);
 
         private static ScriptableObject _toolbar;
         private static Label _versionLabel;
         private static double _nextRefreshTime;
-        private static string _cachedVersionText = "Version: --";
+        private static VersionDisplayInfo _cachedDisplayInfo = VersionDisplayInfo.Unknown;
 
         static VcsVersionToolbar()
         {
-            _cachedVersionText = BuildVersionText();
+            _cachedDisplayInfo = BuildVersionDisplayInfo();
             EditorApplication.update += OnUpdate;
         }
 
@@ -102,7 +108,7 @@ namespace AkiFramework.Editor
 
             _versionLabel = new Label();
             _versionLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
-            _versionLabel.style.color = new Color(0f, 1f, 0f);
+            _versionLabel.style.color = LatestColor;
             _versionLabel.style.fontSize = 12;
             _versionLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
             _versionLabel.style.paddingLeft = 6;
@@ -120,41 +126,47 @@ namespace AkiFramework.Editor
 
         private static void RefreshVersionLabel()
         {
-            var text = BuildVersionText();
-            if (text == _cachedVersionText && _versionLabel != null)
+            var displayInfo = BuildVersionDisplayInfo();
+            if (_versionLabel == null)
             {
-                _versionLabel.text = _cachedVersionText;
+                _cachedDisplayInfo = displayInfo;
                 return;
             }
 
-            _cachedVersionText = text;
-            if (_versionLabel != null)
+            if (_cachedDisplayInfo.Equals(displayInfo))
             {
-                _versionLabel.text = _cachedVersionText;
-                _versionLabel.tooltip = _cachedVersionText;
+                _versionLabel.text = _cachedDisplayInfo.Text;
+                _versionLabel.tooltip = _cachedDisplayInfo.Tooltip;
+                _versionLabel.style.color = _cachedDisplayInfo.Color;
+                return;
             }
+
+            _cachedDisplayInfo = displayInfo;
+            _versionLabel.text = _cachedDisplayInfo.Text;
+            _versionLabel.tooltip = _cachedDisplayInfo.Tooltip;
+            _versionLabel.style.color = _cachedDisplayInfo.Color;
         }
 
-        private static string BuildVersionText()
+        private static VersionDisplayInfo BuildVersionDisplayInfo()
         {
             var projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
 
-            var gitText = GetGitVersion(projectRoot);
-            if (!string.IsNullOrEmpty(gitText))
+            var gitInfo = GetGitVersionInfo(projectRoot);
+            if (gitInfo != null)
             {
-                return gitText;
+                return gitInfo;
             }
 
-            var svnText = GetSvnVersion(projectRoot);
-            if (!string.IsNullOrEmpty(svnText))
+            var svnInfo = GetSvnVersionInfo(projectRoot);
+            if (svnInfo != null)
             {
-                return svnText;
+                return svnInfo;
             }
 
-            return "Version: --";
+            return VersionDisplayInfo.Unknown;
         }
 
-        private static string GetGitVersion(string workingDirectory)
+        private static VersionDisplayInfo GetGitVersionInfo(string workingDirectory)
         {
             if (!Directory.Exists(Path.Combine(workingDirectory, ".git")))
             {
@@ -162,22 +174,69 @@ namespace AkiFramework.Editor
             }
 
             var branch = RunCommand("git", "rev-parse --abbrev-ref HEAD", workingDirectory);
-            var hash = RunCommand("git", "rev-parse --short HEAD", workingDirectory);
+            var localShortHash = RunCommand("git", "rev-parse --short HEAD", workingDirectory);
+            var localFullHash = RunCommand("git", "rev-parse HEAD", workingDirectory);
 
-            if (string.IsNullOrWhiteSpace(hash))
+            if (string.IsNullOrWhiteSpace(localShortHash) || string.IsNullOrWhiteSpace(localFullHash))
             {
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(branch))
+            var upstreamRef = RunCommand("git", "rev-parse --abbrev-ref --symbolic-full-name @{u}", workingDirectory);
+            var latestShortHash = localShortHash;
+            var latestFullHash = localFullHash;
+            var latestTimeRaw = RunCommand("git", "show -s --format=%cI HEAD", workingDirectory);
+            var statusText = "已是最新";
+
+            if (!string.IsNullOrWhiteSpace(upstreamRef))
             {
-                return $"Git {hash}";
+                latestShortHash = RunCommand("git", $"rev-parse --short {upstreamRef}", workingDirectory) ?? localShortHash;
+                latestFullHash = RunCommand("git", $"rev-parse {upstreamRef}", workingDirectory) ?? localFullHash;
+                latestTimeRaw = RunCommand("git", $"show -s --format=%cI {upstreamRef}", workingDirectory) ?? latestTimeRaw;
+                statusText = DetermineGitStatus(localFullHash, latestFullHash, upstreamRef, workingDirectory);
             }
 
-            return $"Git {branch} {hash}";
+            var isBehindLatest = string.Equals(statusText, "落后于最新版本", StringComparison.Ordinal);
+            var latestTimeText = FormatTimeText(latestTimeRaw);
+            var branchText = string.IsNullOrWhiteSpace(branch) ? "Git" : $"Git {branch}";
+            var text = $"{branchText} {localShortHash} / 最新 {latestShortHash}";
+
+            if (!string.IsNullOrWhiteSpace(latestTimeText))
+            {
+                text += $" / 更新时间 {latestTimeText}";
+            }
+
+            var tooltip = $"{statusText}\n当前版本: {localFullHash}\n最新版本: {latestFullHash}";
+            if (!string.IsNullOrWhiteSpace(latestTimeText))
+            {
+                tooltip += $"\n最新更新时间: {latestTimeText}";
+            }
+
+            return new VersionDisplayInfo(text, tooltip, isBehindLatest ? OutdatedColor : LatestColor);
         }
 
-        private static string GetSvnVersion(string workingDirectory)
+        private static string DetermineGitStatus(string localFullHash, string latestFullHash, string upstreamRef, string workingDirectory)
+        {
+            if (string.IsNullOrWhiteSpace(localFullHash) || string.IsNullOrWhiteSpace(latestFullHash))
+            {
+                return "版本状态未知";
+            }
+
+            if (string.Equals(localFullHash, latestFullHash, StringComparison.OrdinalIgnoreCase))
+            {
+                return "已是最新";
+            }
+
+            var mergeBase = RunCommand("git", $"merge-base HEAD {upstreamRef}", workingDirectory);
+            if (string.Equals(mergeBase, localFullHash, StringComparison.OrdinalIgnoreCase))
+            {
+                return "落后于最新版本";
+            }
+
+            return "已包含更新";
+        }
+
+        private static VersionDisplayInfo GetSvnVersionInfo(string workingDirectory)
         {
             var revision = RunCommand("svn", "info --show-item revision", workingDirectory);
             if (string.IsNullOrWhiteSpace(revision))
@@ -187,13 +246,28 @@ namespace AkiFramework.Editor
 
             var relativeUrl = RunCommand("svn", "info --show-item relative-url", workingDirectory);
             var branchText = GetSvnBranchText(relativeUrl);
+            var latestRevision = RunCommand("svn", "info -r HEAD --show-item revision", workingDirectory) ?? revision;
+            var latestTimeRaw = RunCommand("svn", "info -r HEAD --show-item last-changed-date", workingDirectory);
+            var isBehindLatest = !string.Equals(revision, latestRevision, StringComparison.Ordinal);
+            var latestTimeText = FormatTimeText(latestTimeRaw);
 
-            if (string.IsNullOrWhiteSpace(branchText))
+            var text = string.IsNullOrWhiteSpace(branchText)
+                ? $"SVN r{revision} / 最新 r{latestRevision}"
+                : $"SVN {branchText} r{revision} / 最新 r{latestRevision}";
+
+            if (!string.IsNullOrWhiteSpace(latestTimeText))
             {
-                return $"SVN r{revision}";
+                text += $" / 更新时间 {latestTimeText}";
             }
 
-            return $"SVN {branchText} r{revision}";
+            var statusText = isBehindLatest ? "落后于最新版本" : "已是最新";
+            var tooltip = $"{statusText}\n当前版本: r{revision}\n最新版本: r{latestRevision}";
+            if (!string.IsNullOrWhiteSpace(latestTimeText))
+            {
+                tooltip += $"\n最新更新时间: {latestTimeText}";
+            }
+
+            return new VersionDisplayInfo(text, tooltip, isBehindLatest ? OutdatedColor : LatestColor);
         }
 
         private static string GetSvnBranchText(string relativeUrl)
@@ -235,6 +309,21 @@ namespace AkiFramework.Editor
             return $"分支 {branchName}";
         }
 
+        private static string FormatTimeText(string rawTime)
+        {
+            if (string.IsNullOrWhiteSpace(rawTime))
+            {
+                return null;
+            }
+
+            if (DateTimeOffset.TryParse(rawTime, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var parsedTime))
+            {
+                return parsedTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
+            }
+
+            return rawTime.Trim();
+        }
+
         private static string RunCommand(string fileName, string arguments, string workingDirectory)
         {
             try
@@ -253,7 +342,20 @@ namespace AkiFramework.Editor
 
                 process.Start();
                 var output = process.StandardOutput.ReadToEnd().Trim();
-                process.WaitForExit(2000);
+                process.StandardError.ReadToEnd();
+
+                if (!process.WaitForExit(2000))
+                {
+                    try
+                    {
+                        process.Kill();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                    }
+
+                    return null;
+                }
 
                 if (process.ExitCode != 0)
                 {
@@ -265,6 +367,44 @@ namespace AkiFramework.Editor
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        private sealed class VersionDisplayInfo : IEquatable<VersionDisplayInfo>
+        {
+            public static VersionDisplayInfo Unknown { get; } = new(UnknownVersionText, UnknownVersionText, UnknownColor);
+
+            public VersionDisplayInfo(string text, string tooltip, Color color)
+            {
+                Text = text;
+                Tooltip = tooltip;
+                Color = color;
+            }
+
+            public string Text { get; }
+
+            public string Tooltip { get; }
+
+            public Color Color { get; }
+
+            public bool Equals(VersionDisplayInfo other)
+            {
+                if (ReferenceEquals(other, null))
+                {
+                    return false;
+                }
+
+                return Text == other.Text && Tooltip == other.Tooltip && Color.Equals(other.Color);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is VersionDisplayInfo other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Text, Tooltip, Color);
             }
         }
     }
